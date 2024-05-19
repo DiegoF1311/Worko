@@ -12,11 +12,11 @@ public class Training {
 	@Id
 	private String id;
 	@Indexed(unique = true)
-	private Long id_training;
+	private Long idtraining;
 	@Indexed(unique = true)
-	private Long id_user;
+	private Long iduser;
 	@Indexed(unique = true)
-	private Long id_routine;
+	private Long idroutine;
 	private Date date;
 	private Integer duration;
 	
@@ -24,10 +24,10 @@ public class Training {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Training(Long id_training, Long id_user, Long id_routine, Date date, Integer duration) {
-		this.id_training = id_training;
-		this.id_user = id_user;
-		this.id_routine = id_routine;
+	public Training(Long idtraining, Long iduser, Long idroutine, Date date, Integer duration) {
+		this.idtraining = idtraining;
+		this.iduser = iduser;
+		this.idroutine = idroutine;
 		this.date = date;
 		this.duration = duration;
 	}
@@ -40,28 +40,28 @@ public class Training {
 		this.id = id;
 	}
 
-	public Long getId_training() {
-		return id_training;
+	public Long getIdtraining() {
+		return idtraining;
 	}
 
-	public void setId_training(Long id_training) {
-		this.id_training = id_training;
+	public void setIdtraining(Long idtraining) {
+		this.idtraining = idtraining;
 	}
 
-	public Long getId_user() {
-		return id_user;
+	public Long getIduser() {
+		return iduser;
 	}
 
-	public void setId_user(Long id_user) {
-		this.id_user = id_user;
+	public void setIduser(Long iduser) {
+		this.iduser = iduser;
 	}
 
-	public Long getId_routine() {
-		return id_routine;
+	public Long getIdroutine() {
+		return idroutine;
 	}
 
-	public void setId_routine(Long id_routine) {
-		this.id_routine = id_routine;
+	public void setIdroutine(Long idroutine) {
+		this.idroutine = idroutine;
 	}
 
 	public Date getDate() {
@@ -82,8 +82,8 @@ public class Training {
 
 	@Override
 	public String toString() {
-		return "Training [id=" + id + ", id_training=" + id_training + ", id_user=" + id_user + ", id_routine="
-				+ id_routine + ", date=" + date + ", duration=" + duration + "]";
+		return "Training [id=" + id + ", idtraining=" + idtraining + ", iduser=" + iduser + ", idroutine="
+				+ idroutine + ", date=" + date + ", duration=" + duration + "]";
 	}
 	
 	@Override

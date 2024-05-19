@@ -10,7 +10,7 @@ public class Routine {
 	@Id
 	private String id;
 	@Indexed(unique = true)
-	private Long id_routine;
+	private Long idroutine;
 	private String name;
 	private String description;
 	private String difficulty;
@@ -19,8 +19,8 @@ public class Routine {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Routine(Long id_routine, String name, String description, String difficulty) {
-		this.id_routine = id_routine;
+	public Routine(Long idroutine, String name, String description, String difficulty) {
+		this.idroutine = idroutine;
 		this.name = name;
 		this.description = description;
 		this.difficulty = difficulty;
@@ -34,12 +34,12 @@ public class Routine {
 		this.id = id;
 	}
 
-	public Long getId_routine() {
-		return id_routine;
+	public Long getIdroutine() {
+		return idroutine;
 	}
 
-	public void setId_routine(Long id_routine) {
-		this.id_routine = id_routine;
+	public void setIdroutine(Long idroutine) {
+		this.idroutine = idroutine;
 	}
 
 	public String getName() {
@@ -68,7 +68,7 @@ public class Routine {
 
 	@Override
 	public String toString() {
-		return "Routine [id=" + id + ", id_routine=" + id_routine + ", name=" + name + ", description=" + description
+		return "Routine [id=" + id + ", id_routine=" + idroutine + ", name=" + name + ", description=" + description
 				+ ", difficulty=" + difficulty + "]";
 	}
 

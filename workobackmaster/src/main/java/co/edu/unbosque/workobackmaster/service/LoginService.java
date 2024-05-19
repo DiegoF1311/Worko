@@ -33,4 +33,20 @@ public class LoginService {
 	public List<Login> getAll() {
 		return loginRepository.findAll();
 	}
+	
+	public Login findById(String id) {
+		Optional<Login> found = loginRepository.findById(id);
+		if (found.isPresent()) {
+			return found.get();
+		}
+		return null;
+	}
+	
+	public Login findByIduser(Long iduser) {
+		Login aux = loginRepository.findByIduser(iduser).get(0);
+		if (aux != null) {
+			return aux;
+		}
+		return null;
+	}
 }

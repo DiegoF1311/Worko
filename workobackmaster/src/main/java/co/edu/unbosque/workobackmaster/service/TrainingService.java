@@ -33,4 +33,7 @@ public class TrainingService {
 		return trainingRepository.findAll();
 	}
 	
+	public List<Training> getTrainingsByUser(Long iduser) {
+		return trainingRepository.findByIduser(iduser);
+	}
 }

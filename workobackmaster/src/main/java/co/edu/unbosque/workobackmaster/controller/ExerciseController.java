@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.workobackmaster.model.Exercise;
+import co.edu.unbosque.workobackmaster.model.ExerciseRoutine;
+import co.edu.unbosque.workobackmaster.service.ExerciseRoutineService;
 import co.edu.unbosque.workobackmaster.service.ExerciseService;
 import co.edu.unbosque.workobackmaster.service.SequenceService;
 
@@ -25,6 +27,8 @@ public class ExerciseController {
 
 	@Autowired
 	public ExerciseService exerciseService;
+	@Autowired
+	public ExerciseRoutineService exerciseRoutineService;
 	@Autowired
 	public SequenceService seqExerciseService;
 	
@@ -41,4 +45,32 @@ public class ExerciseController {
 		}
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(aux);
 	}
+	
+	@GetMapping("/getByIdExercise")
+	public ResponseEntity<List<Exercise>> getByIdExercise(@RequestParam Long idexercise) {
+		List<Exercise> aux = exerciseService.getByIdExercise(idexercise);
+		if (aux.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(aux);
+	}
+	
+	@GetMapping("/getByRoutine")
+	public ResponseEntity<List<Exercise>> getMethodName(@RequestParam Long idroutine) {
+		List<ExerciseRoutine> aux = exerciseRoutineService.getByIdRoutine(idroutine);
+		if (aux.isEmpty()) {			
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		}
+		Long[] ids = new Long[aux.size()];
+		for (int i = 0; i < ids.length; i++) {
+			ids[i] = aux.get(i).getIdexercise();
+		}
+		List<Exercise> list = exerciseService.getByRoutine(ids);
+		if (list.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(list);
+	}
+	
+	
  }

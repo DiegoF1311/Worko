@@ -11,7 +11,7 @@ public class User {
 	@Id
 	private String id;
 	@Indexed(unique = true)
-	private Long id_usr;
+	private Long idusr;
 	@Indexed(unique = true)
 	private String username;
 	private String name;
@@ -20,15 +20,15 @@ public class User {
 	private String genre;
 	private Integer height;
 	private Integer weight;
-	private Date registration_date;
+	private Date registrationdate;
 	
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public User(Long id_usr, String username, String name, String email, Integer age, String genre, Integer height,
-			Integer weight, Date registration_date) {
-		this.id_usr = id_usr;
+			Integer weight, Date registrationdate) {
+		this.idusr = id_usr;
 		this.username = username;
 		this.name = name;
 		this.email = email;
@@ -36,7 +36,7 @@ public class User {
 		this.genre = genre;
 		this.height = height;
 		this.weight = weight;
-		this.registration_date = registration_date;
+		this.registrationdate = registrationdate;
 	}
 
 	public String getId() {
@@ -55,12 +55,12 @@ public class User {
 		this.username = username;
 	}
 
-	public Long getId_usr() {
-		return id_usr;
+	public Long getIdusr() {
+		return idusr;
 	}
 
-	public void setId_usr(Long id_usr) {
-		this.id_usr = id_usr;
+	public void setIdusr(Long idusr) {
+		this.idusr = idusr;
 	}
 
 	public String getName() {
@@ -111,19 +111,19 @@ public class User {
 		this.weight = weight;
 	}
 
-	public Date getRegistration_date() {
-		return registration_date;
+	public Date getRegistrationdate() {
+		return registrationdate;
 	}
 
-	public void setRegistration_date(Date registration_date) {
-		this.registration_date = registration_date;
+	public void setRegistrationdate(Date registrationdate) {
+		this.registrationdate = registrationdate;
 	}
 	
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", id_usr=" + id_usr + ", username=" + username + ", name=" + name + ", email="
+		return "User [id=" + id + ", id_usr=" + idusr + ", username=" + username + ", name=" + name + ", email="
 				+ email + ", age=" + age + ", genre=" + genre + ", height=" + height + ", weight=" + weight
-				+ ", registration_date=" + registration_date + "]";
+				+ ", registration_date=" + registrationdate + "]";
 	}
 
 	@Override

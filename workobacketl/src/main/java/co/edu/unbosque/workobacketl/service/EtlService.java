@@ -29,22 +29,22 @@ public class EtlService {
 	public void transform(String json, Object o) {
 		Gson g = new Gson();
 		if(ExerciseETL.class.equals(o)) {
-			ExerciseETL[] temps=g.fromJson(json, ExerciseETL[].class);
+			ExerciseETL[] temps = g.fromJson(json, ExerciseETL[].class);
 			exerciseETLs = new ArrayList<>(Arrays.asList(temps));
-		}else if(ExerciseRoutineETL.class.equals(o)) {
-			ExerciseRoutineETL[] temps=g.fromJson(json, ExerciseRoutineETL[].class);
+		} else if (ExerciseRoutineETL.class.equals(o)) {
+			ExerciseRoutineETL[] temps = g.fromJson(json, ExerciseRoutineETL[].class);
 			exerciseRoutineETLs = new ArrayList<>(Arrays.asList(temps));
-		}else if(LoginETL.class.equals(o)) {
-			LoginETL[] temps=g.fromJson(json, LoginETL[].class);
+		} else if (LoginETL.class.equals(o)) {
+			LoginETL[] temps = g.fromJson(json, LoginETL[].class);
 			loginETLs = new ArrayList<>(Arrays.asList(temps));
-		}else if(RoutineETL.class.equals(o)) {
-			RoutineETL[] temps=g.fromJson(json, RoutineETL[].class);
+		} else if (RoutineETL.class.equals(o)) {
+			RoutineETL[] temps = g.fromJson(json, RoutineETL[].class);
 			routineETLs = new ArrayList<>(Arrays.asList(temps));
-		}else if(TrainingETL.class.equals(o)) {
-			TrainingETL[] temps=g.fromJson(json, TrainingETL[].class);
+		} else if (TrainingETL.class.equals(o)) {
+			TrainingETL[] temps = g.fromJson(json, TrainingETL[].class);
 			trainingETLs = new ArrayList<>(Arrays.asList(temps));
-		}else if(UserETL.class.equals(o)) {
-			UserETL[] temps=g.fromJson(json, UserETL[].class);
+		} else if (UserETL.class.equals(o)) {
+			UserETL[] temps = g.fromJson(json, UserETL[].class);
 			userETLs = new ArrayList<>(Arrays.asList(temps));
 		}
 	}

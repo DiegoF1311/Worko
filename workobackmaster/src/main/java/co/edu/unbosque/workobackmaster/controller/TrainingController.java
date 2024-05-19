@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unbosque.workobackmaster.model.Training;
 import co.edu.unbosque.workobackmaster.service.SequenceService;
 import co.edu.unbosque.workobackmaster.service.TrainingService;
+import co.edu.unbosque.workobackmaster.service.UserService;
 
 
 @RestController
@@ -32,10 +33,12 @@ public class TrainingController {
 	@Autowired
 	public TrainingService trainingService;
 	@Autowired
+	public UserService userService;
+	@Autowired
 	public SequenceService sequenceService;
 	
 	@PostMapping("/createTraining")
-	public void create(@RequestParam Long id_user, @RequestParam Long id_routine, @RequestParam String date, @RequestParam Integer duration) {
+	public void create(@RequestParam Long iduser, @RequestParam Long idroutine, @RequestParam String date, @RequestParam Integer duration) {
 		Date dateaux = null;
 		try {
 			dateaux = formatter.parse(date);
@@ -43,7 +46,7 @@ public class TrainingController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Training aux = new Training(sequenceService.getNextValue("seqtraining"), id_user, id_routine, dateaux, duration);
+		Training aux = new Training(sequenceService.getNextValue("seqtraining"), iduser, idroutine, dateaux, duration);
 		trainingService.create(aux);
 	}
 	
@@ -55,5 +58,15 @@ public class TrainingController {
 		}
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(aux);
 	}
+	
+	@GetMapping("/getTrainingsByUser")
+	public ResponseEntity<List<Training>> getTrainingsByUser(@RequestParam String iduser) {
+		List<Training> aux = trainingService.getTrainingsByUser(userService.findById(iduser).getIdusr());
+		if (aux.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(aux);
+	}
+	
 	
 }

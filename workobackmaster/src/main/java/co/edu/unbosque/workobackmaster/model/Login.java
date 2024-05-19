@@ -9,15 +9,15 @@ public class Login {
 	@Id
 	private String id;
 	@Indexed(unique = true)
-	private Long id_user;
+	private Long iduser;
 	private String password;
 	
 	public Login() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Login(Long id_user, String password) {
-		this.id_user = id_user;
+	public Login(Long iduser, String password) {
+		this.iduser = iduser;
 		this.password = password;
 	}
 
@@ -29,12 +29,12 @@ public class Login {
 		this.id = id;
 	}
 
-	public Long getId_user() {
-		return id_user;
+	public Long getIduser() {
+		return iduser;
 	}
 
-	public void setId_user(Long id_user) {
-		this.id_user = id_user;
+	public void setIduser(Long id_user) {
+		this.iduser = id_user;
 	}
 
 	public String getPassword() {
@@ -47,7 +47,7 @@ public class Login {
 
 	@Override
 	public String toString() {
-		return "Login [id=" + id + ", id_user=" + id_user + ", password=" + password + "]";
+		return "Login [id=" + id + ", iduser=" + iduser + ", password=" + password + "]";
 	}
 	
 	@Override

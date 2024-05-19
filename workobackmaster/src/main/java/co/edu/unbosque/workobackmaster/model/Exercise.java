@@ -9,7 +9,7 @@ public class Exercise {
 	@Id
 	private String id;
 	@Indexed(unique = true)
-	private Long id_exercise;
+	private Long idexercise;
 	private String name;
 	private String difficulty;
 	private String equipment;
@@ -20,9 +20,9 @@ public class Exercise {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Exercise(Long id_exercise, String name, String difficulty, String equipment, String focus, String url) {
+	public Exercise(Long idexercise, String name, String difficulty, String equipment, String focus, String url) {
 		super();
-		this.id_exercise = id_exercise;
+		this.idexercise = idexercise;
 		this.name = name;
 		this.difficulty = difficulty;
 		this.equipment = equipment;
@@ -44,12 +44,12 @@ public class Exercise {
 		this.id = id;
 	}
 
-	public Long getId_exercise() {
-		return id_exercise;
+	public Long getIdexercise() {
+		return idexercise;
 	}
 
-	public void setId_exercise(Long id_exercise) {
-		this.id_exercise = id_exercise;
+	public void setIdexercise(Long id_exercise) {
+		this.idexercise = id_exercise;
 	}
 
 	public String getName() {

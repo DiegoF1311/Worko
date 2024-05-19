@@ -38,10 +38,10 @@ public class UserController {
 	public SequenceService sequenceService;
 	
 	@PostMapping("/createUser")
-	public void create(@RequestParam String username, @RequestParam String name, @RequestParam String email, @RequestParam Integer age, @RequestParam String genre, @RequestParam Integer height, @RequestParam Integer weight, @RequestParam String registration_date, @RequestParam String password) {
+	public void create(@RequestParam String username, @RequestParam String name, @RequestParam String email, @RequestParam Integer age, @RequestParam String genre, @RequestParam Integer height, @RequestParam Integer weight, @RequestParam String registrationdate, @RequestParam String password) {
 		Date date = null;
 		try {
-			date = formatter.parse(registration_date);
+			date = formatter.parse(registrationdate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,4 +60,19 @@ public class UserController {
 		}
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(aux);
 	}
+	
+	@GetMapping("/userlogin")
+	public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+		User usr = userService.findByUsername(username);
+		if (usr == null) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario no encontrado!");
+		}
+		Login log = loginService.findByIduser(usr.getIdusr());
+		if (password.equals(log.getPassword())) {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(usr.getId());
+		} else {			
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales erroneas!");
+		}
+	}
+	
 }

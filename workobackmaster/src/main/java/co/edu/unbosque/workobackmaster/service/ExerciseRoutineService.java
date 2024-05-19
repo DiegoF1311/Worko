@@ -34,4 +34,8 @@ public class ExerciseRoutineService {
 		return exerciseRoutineRepository.findAll();
 	}
 	
+	public List<ExerciseRoutine> getByIdRoutine(Long idroutine) {
+		return exerciseRoutineRepository.findByIdroutine(idroutine);
+	}
+	
 }

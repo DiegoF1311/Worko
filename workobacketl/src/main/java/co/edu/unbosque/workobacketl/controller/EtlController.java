@@ -238,7 +238,7 @@ public class EtlController {
 					"&genre=" + urlEncode(user.getGenre()) +
 					"&height=" + urlEncode(user.getHeight()+"") +
 					"&weight=" + urlEncode(user.getWeight()+"") +
-					"&registration_date=" + urlEncode(dateFormat.format(user.getRegistration_date()));
+					"&registrationdate=" + urlEncode(dateFormat.format(user.getRegistration_date()));
 			
 		} else if (o instanceof LoginETL){
 			
@@ -248,8 +248,8 @@ public class EtlController {
 			
 		} else if (o instanceof TrainingETL){
 			TrainingETL training = (TrainingETL) o;
-			return "id_user=" + urlEncode(training.getId_user()+"") +
-					"&id_routine=" + urlEncode(training.getId_routine()+"") +
+			return "iduser=" + urlEncode(training.getId_user()+"") +
+					"&idroutine=" + urlEncode(training.getId_routine()+"") +
 					"&date=" + urlEncode(dateFormat.format(training.getDate())) +
 					"&duration=" + urlEncode(training.getDuration()+"");
 			
@@ -263,8 +263,8 @@ public class EtlController {
 		} else if (o instanceof ExerciseRoutineETL){
 			
 			ExerciseRoutineETL exerciseRoutine = (ExerciseRoutineETL) o;
-			return "id_routine=" + urlEncode(exerciseRoutine.getId_routine()+"") +
-					"&id_exercise=" + urlEncode(exerciseRoutine.getId_exercise()+"") +
+			return "idroutine=" + urlEncode(exerciseRoutine.getId_routine()+"") +
+					"&idexercise=" + urlEncode(exerciseRoutine.getId_exercise()+"") +
 					"&sets=" + urlEncode(exerciseRoutine.getSets()+"") +
 					"&repetitions=" + urlEncode(exerciseRoutine.getRepetitions()+"");
 		}

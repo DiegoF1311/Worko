@@ -31,4 +31,31 @@ public class UserService {
 	public List<User> getAll() {
 		return userRepository.findAll();
 	}
+	
+	public User findById(String id) {
+		Optional<User> found = userRepository.findById(id);
+		if (found.isPresent()) {
+			return found.get();
+		}
+		return null;
+	}
+	
+	public User findByUsername(String username) {
+		if (userRepository.findByUsername(username).isEmpty()) {
+			return null;
+		}
+		User aux = userRepository.findByUsername(username).get(0);
+		if (aux != null) {
+			return aux;
+		}
+		return null;
+	}
+	
+	public User findByIdUser(Long iduser) {
+		User aux = userRepository.findByIdusr(iduser).get(0);
+		if (aux != null) {
+			return aux;
+		}
+		return null;
+	}
 }

@@ -27,8 +27,8 @@ public class ExerciseRoutineController {
 	public ExerciseRoutineService exerciseRoutineService;
 	
 	@PostMapping("/createExerciseRoutine")
-	public void create(@RequestParam Long id_routine, @RequestParam Long id_exercise, @RequestParam Integer sets, @RequestParam Integer repetitions) {
-		ExerciseRoutine aux = new ExerciseRoutine(id_routine, id_exercise, sets, repetitions);
+	public void create(@RequestParam Long idroutine, @RequestParam Long idexercise, @RequestParam Integer sets, @RequestParam Integer repetitions) {
+		ExerciseRoutine aux = new ExerciseRoutine(idroutine, idexercise, sets, repetitions);
 		exerciseRoutineService.create(aux);
 	}
 	
@@ -40,5 +40,15 @@ public class ExerciseRoutineController {
 		}
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(aux);
 	}
+	
+	@GetMapping("/getByIdRoutine")
+	public ResponseEntity<List<ExerciseRoutine>> getByIdRoutine(@RequestParam Long idroutine) {
+		List<ExerciseRoutine> aux = exerciseRoutineService.getByIdRoutine(idroutine);
+		if (aux.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(aux);
+	}
+	
 	
 }

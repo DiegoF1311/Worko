@@ -1,5 +1,6 @@
 package co.edu.unbosque.workobackmaster.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,21 @@ public class ExerciseService {
 	}
 	
 	public List<Exercise> getAll(){
-		return (List<Exercise>) exerciseRepository.findAll();
+		return exerciseRepository.findAll();
+	}
+	
+	public List<Exercise> getByIdExercise(Long idexercise) {
+		return exerciseRepository.findByIdexercise(idexercise);
+	}
+	
+	public List<Exercise> getByRoutine(Long[] ids) {
+		List<Exercise> aux = new ArrayList<>();
+		for (int i = 0; i < ids.length; i++) {
+			if (!getByIdExercise(ids[i]).isEmpty()) {				
+				aux.add(getByIdExercise(ids[i]).get(0));
+			}
+		}
+		return aux;
 	}
 
 }

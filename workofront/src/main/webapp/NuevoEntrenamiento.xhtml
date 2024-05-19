@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui"
+      xml:lang="es" lang="es">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>WORKO</title>
+    <style type="text/css">
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('#{request.contextPath}/imagenes/fondo.jpeg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .header {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title-container {
+            flex: 1;
+            text-align: left;
+            margin-left: 20px;
+        }
+
+        .select-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .select-container select {
+            padding: 10px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .sign-in-button,
+        .create-routine-button,
+        .customize-routine-button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-right: 10px;
+        }
+
+        .sign-in-button:hover,
+        .create-routine-button:hover,
+        .customize-routine-button:hover {
+            background-color: #c0392b;
+        }
+
+        .create-routine-button {
+            background-color: #3498db;
+            margin-right: 10px;
+        }
+
+        .create-routine-button:hover {
+            background-color: #2980b9;
+        }
+
+        .customize-routine-button {
+            background-color: #2ecc71;
+            margin-right: 10px;
+        }
+
+        .customize-routine-button:hover {
+            background-color: #27ae60;
+        }
+
+        .change-password-form {
+            width: 100%;
+            max-width: 500px;
+            padding: 60px 40px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            color: #ffffff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .change-password-form h2 {
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+
+        .change-password-form p {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .change-password-form p:last-child {
+            margin-bottom: 0;
+        }
+
+        .change-password-form p a {
+            color: #cccccc;
+            text-decoration: none;
+        }
+
+        .change-password-form p a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</h:head>
+
+<h:body style="text-align:center">
+    <div class="header">
+        <div class="title-container">
+            <h1 class="text-white m-0">WORKO</h1>
+        </div>
+        <div class="select-container">
+            <p:button value="Home" styleClass="sign-in-button" />
+            <p:button value="Usuario" styleClass="create-routine-button" />
+            <p:button value="Ejercicio" styleClass="customize-routine-button" />
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="change-password-form col-md-8 col-lg-6">
+                <h2>Nuevo Entrenamiento</h2>
+                <p>Elige la rutina que seguirás en este nuevo entrenamiento</p>
+            </div>
+        </div>
+    </div>
+</h:body>
+</html>

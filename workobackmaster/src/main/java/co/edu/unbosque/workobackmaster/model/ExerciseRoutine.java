@@ -8,8 +8,8 @@ public class ExerciseRoutine {
 	
 	@Id
 	private String id;
-	private Long id_routine;
-	private Long id_exercise;
+	private Long idroutine;
+	private Long idexercise;
 	private Integer sets;
 	private Integer repetitions;
 	
@@ -17,9 +17,9 @@ public class ExerciseRoutine {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ExerciseRoutine(Long id_routine, Long id_exercise, Integer sets, Integer repetitions) {
-		this.id_routine = id_routine;
-		this.id_exercise = id_exercise;
+	public ExerciseRoutine(Long idroutine, Long idexercise, Integer sets, Integer repetitions) {
+		this.idroutine = idroutine;
+		this.idexercise = idexercise;
 		this.sets = sets;
 		this.repetitions = repetitions;
 	}
@@ -32,20 +32,20 @@ public class ExerciseRoutine {
 		this.id = id;
 	}
 
-	public Long getId_routine() {
-		return id_routine;
+	public Long getIdroutine() {
+		return idroutine;
 	}
 
-	public void setId_routine(Long id_routine) {
-		this.id_routine = id_routine;
+	public void setIdroutine(Long idroutine) {
+		this.idroutine = idroutine;
 	}
 
-	public Long getId_exercise() {
-		return id_exercise;
+	public Long getIdexercise() {
+		return idexercise;
 	}
 
-	public void setId_exercise(Long id_exercise) {
-		this.id_exercise = id_exercise;
+	public void setIdexercise(Long idexercise) {
+		this.idexercise = idexercise;
 	}
 
 	public Integer getSets() {
@@ -66,7 +66,7 @@ public class ExerciseRoutine {
 
 	@Override
 	public String toString() {
-		return "ExerciseRoutine [id=" + id + ", id_routine=" + id_routine + ", id_exercise=" + id_exercise + ", sets="
+		return "ExerciseRoutine [id=" + id + ", id_routine=" + idroutine + ", id_exercise=" + idexercise + ", sets="
 				+ sets + ", repetitions=" + repetitions + "]";
 	}
 	
