@@ -1,6 +1,6 @@
 package co.edu.unbosque.workobacketl.model;
 
-public class Exercise {
+public class ExerciseETL {
 	
 	private String id;
 	private Long id_exercise;
@@ -11,12 +11,12 @@ public class Exercise {
 	private String url;
 
 
-	public Exercise() {
+	public ExerciseETL() {
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public Exercise(Long id_exercise, String name, String difficulty, String equipment, String focus, String url) {
+	public ExerciseETL(Long id_exercise, String name, String difficulty, String equipment, String focus, String url) {
 		super();
 		this.id_exercise = id_exercise;
 		this.name = name;

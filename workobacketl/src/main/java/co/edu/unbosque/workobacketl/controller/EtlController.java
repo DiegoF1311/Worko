@@ -26,7 +26,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import co.edu.unbosque.workobacketl.model.Exercise;
+import co.edu.unbosque.workobacketl.model.ExerciseETL;
 import co.edu.unbosque.workobacketl.model.ExerciseRoutineETL;
 import co.edu.unbosque.workobacketl.model.LoginETL;
 import co.edu.unbosque.workobacketl.model.RoutineETL;
@@ -67,7 +67,7 @@ public class EtlController {
 
 		String uglyJson = response.body();
 		
-		if (url.equals("http://localhost:8081/getAll")) o = Exercise.class;
+		if (url.equals("http://localhost:8081/getAll")) o = ExerciseETL.class;
 		else if (url.equals("http://localhost:8082/getAllUsers")) o = UserETL.class;
 		else if (url.equals("http://localhost:8082/getAllLogin")) o = LoginETL.class;
 		else if (url.equals("http://localhost:8083/getAllTrainings")) o = TrainingETL.class;
@@ -81,9 +81,9 @@ public class EtlController {
 
 	@PostMapping("/loadExercises")
 	public ResponseEntity<String> postExercises() {
-		List<Exercise> exercises = EtlService.exerciseETLs; 
+		List<ExerciseETL> exercises = EtlService.exerciseETLs; 
 
-		for (Exercise exercise : exercises) {
+		for (ExerciseETL exercise : exercises) {
 			String formParams = convertToFormParams(exercise);
 			HttpRequest request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(formParams))
@@ -222,8 +222,8 @@ public class EtlController {
 	}
 
 	private String convertToFormParams(Object o) {
-		if (o instanceof Exercise){
-			Exercise exercise = (Exercise) o;
+		if (o instanceof ExerciseETL){
+			ExerciseETL exercise = (ExerciseETL) o;
 			return "name=" + urlEncode(exercise.getName()) +
 					"&difficulty=" + urlEncode(exercise.getDifficulty()) +
 					"&equipment=" + urlEncode(exercise.getEquipment()) +

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 
-import co.edu.unbosque.workobacketl.model.Exercise;
+import co.edu.unbosque.workobacketl.model.ExerciseETL;
 import co.edu.unbosque.workobacketl.model.ExerciseRoutineETL;
 import co.edu.unbosque.workobacketl.model.LoginETL;
 import co.edu.unbosque.workobacketl.model.RoutineETL;
@@ -18,7 +18,7 @@ import co.edu.unbosque.workobacketl.model.UserETL;
 @Service
 public class EtlService {
 
-	public static ArrayList<Exercise> exerciseETLs;
+	public static ArrayList<ExerciseETL> exerciseETLs;
 	public static ArrayList<ExerciseRoutineETL> exerciseRoutineETLs;
 	public static ArrayList<LoginETL> loginETLs;
 	public static ArrayList<RoutineETL> routineETLs;
@@ -28,8 +28,8 @@ public class EtlService {
 	
 	public void transform(String json, Object o) {
 		Gson g = new Gson();
-		if(Exercise.class.equals(o)) {
-			Exercise[] temps = g.fromJson(json, Exercise[].class);
+		if(ExerciseETL.class.equals(o)) {
+			ExerciseETL[] temps = g.fromJson(json, ExerciseETL[].class);
 			exerciseETLs = new ArrayList<>(Arrays.asList(temps));
 		} else if (ExerciseRoutineETL.class.equals(o)) {
 			ExerciseRoutineETL[] temps = g.fromJson(json, ExerciseRoutineETL[].class);
