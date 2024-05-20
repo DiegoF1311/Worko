@@ -23,18 +23,19 @@
 			<h:form styleClass="form" id="passwordChangeForm" action="/submit-your-password-change-form" method="post">
 				<div>
 					<label for="usuario" class="form-label">Usuario:</label>
-					<p:inputText id="usuario" name="usuario" placeholder="Usuario:" required="true" styleClass="form-input"/>
+					<p:inputText id="usuario" name="usuario" placeholder="Usuario:" required="true" styleClass="form-input" value="#{UserBean.username}"/>
 				</div>
 				<div>
 					<label for="password" class="form-label">Contraseña:</label>
 					<p:password id="password" name="password" placeholder="Contraseña:"
-						required="true" feedback="true" promptLabel="Ingresa tu contraseña"
-						weakLabel="Débil" goodLabel="Buena" strongLabel="Fuerte"
-						toggleMask="true" redisplay="true" styleClass="form-input"/>
+						required="true" promptLabel="Ingresa tu contraseña"
+						toggleMask="true" redisplay="true" styleClass="form-input" value="#{UserBean.password}"/>
 				</div>
-				<p:commandButton styleClass="form-button" value="CONFIRMAR"/>
+				<p:commandButton styleClass="form-button" value="CONFIRMAR" action="#{UserBean.login}" update="growl-sticky"/>
 			</h:form>
 			<p>¿Ya tienes una cuenta? <a href="#">Inicia Sesión aquí.</a></p>
 		</div>
+		<p:growl id="growl-sticky" for="sticky-key" showDetail="true"
+		sticky="true" />
 	</h:body>
 </html>

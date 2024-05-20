@@ -75,6 +75,11 @@ a {
 	border-radius: 1rem;
 }
 
+.buttons-header {
+	display: flex;
+	justify-content: space-between;
+	width: 10rem;
+}
 
 .form-container {
 	display: flex;
@@ -567,7 +572,7 @@ body .ui-button.rounded-button {
 
 body .ui-button.rounded-button.ui-button-icon-only {
     border-radius: 50%;
-    height: 2.357rem
+    height: 2.357rem;
 }
 
 body .ui-button .ui-icon-triangle-1-s {

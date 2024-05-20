@@ -65,7 +65,7 @@ public class UserController {
 	public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
 		User usr = userService.findByUsername(username);
 		if (usr == null) {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario no encontrado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario no encontrado!");
 		}
 		Login log = loginService.findByIduser(usr.getIdusr());
 		if (password.equals(log.getPassword())) {
