@@ -1,6 +1,7 @@
 package co.edu.unbosque.workobackmaster.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,16 @@ public class RoutineService {
 	
 	public List<Routine> getAll() {
 		return routineRepository.findAll();
+	}
+	
+	public List<Routine> getByTrainings(Long[] ids) {
+		List<Routine> aux = new ArrayList<>();
+		for (int i = 0; i < ids.length; i++) {
+			if(!routineRepository.findByIdroutine(ids[i]).isEmpty()) {
+				aux.add(routineRepository.findByIdroutine(ids[i]).get(0));
+			}
+		}
+		return aux;
 	}
 	
 }

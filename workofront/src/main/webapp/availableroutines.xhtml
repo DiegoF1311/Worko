@@ -5,27 +5,53 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-	<h:head>
-		<title>Create Routine</title>
-		<link rel="stylesheet" type="text/css" href="theme.css" />
-		<h:outputStylesheet library="webjars"
-			name="primeflex/3.3.1/primeflex.min.css" />
-	</h:head>
+<h:head>
+	<title>Create Routine</title>
+	<link rel="stylesheet" type="text/css" href="theme.css" />
+	<h:outputStylesheet library="webjars"
+		name="primeflex/3.3.1/primeflex.min.css" />
+</h:head>
 
-<h:body style="text-align:center">
-    <div class="header">
-        <div class="title-container">
-            <h1 class="text-white m-0">WORKO</h1>
-        </div>
-      <div class="select-container">
-            <p:button value="Home" styleClass="signin-buttons" />
-            <p:button value="Usuario" styleClass="signin-buttons" />
-            <p:button value="Ejercicio" styleClass="signin-buttons" />
-        </div>
-    </div>
-    <div class="avairoutine-container">
-                <h2>Rutinas disponibles</h2>
-                <p>Aqui estan todas las rutinas que tenemos disponibles</p>
-    </div>
+<h:body>
+	<div class="header">
+		<div class="title-container">
+			<h1 class="text-white m-0">WORKO</h1>
+		</div>
+		<div class="buttons-header">
+			<p:button icon="pi pi-home"
+				styleClass="rounded-button ui-button-secondary" outcome="home" />
+			<p:button icon="pi pi-user"
+				styleClass="rounded-button ui-button-secondary" />
+		</div>
+	</div>
+	<div class="avairoutine-container">
+		<h2>Rutinas disponibles</h2>
+		<p>Aqui estan todas las rutinas que tenemos disponibles</p>
+		<p:dataView var="routine" value="#{UserBean.routines}" rows="12"
+			paginator="true" lazy="false"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			gridIcon="pi pi-th-large" listIcon="pi pi-bars" layout="grid"
+			gridRowStyleClass="lg:col-6 xl:col-4" flex="true" styleClass="new-routine-container-item">
+
+			<p:dataViewGridItem>
+				<div class="rounded-content exercise-grid-item">
+					<div class="product-name">
+						<h2>#{routine.name}</h2>
+					</div>
+					<div class="product-description">#{routine.description}</div>
+					<div class="product-description">Dificultad:
+						#{routine.difficulty}</div>
+				</div>
+			</p:dataViewGridItem>
+			<p:dataViewListItem>
+				<div class="rounded-content exercise-list-item">
+					<div class="product-name"><h2>#{routine.name}</h2></div>
+					<div class="product-description">#{routine.description}</div>
+					<div class="product-description">Dificultad:
+						#{routine.difficulty}</div>
+				</div>
+			</p:dataViewListItem>
+		</p:dataView>
+	</div>
 </h:body>
 </html>

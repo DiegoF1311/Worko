@@ -5,46 +5,77 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Worko New Routine</title>
-	<link rel="stylesheet" type="text/css" href="theme.css" />
-	<h:outputStylesheet library="webjars"
-		name="primeflex/3.3.1/primeflex.min.css" />
-</h:head>
-
-<h:body>
-	<div class="header">
-		<div class="title-container">
-			<h1 class="text-white m-0">WORKO</h1>
+	<h:head>
+		<title>Worko New Routine</title>
+		<link rel="stylesheet" type="text/css" href="theme.css" />
+		<h:outputStylesheet library="webjars"
+			name="primeflex/3.3.1/primeflex.min.css" />
+	</h:head>
+	
+	<h:body>
+		<div class="header">
+			<h1 class="">WORKO</h1>
+			<div class="buttons-header">
+				<p:button icon="pi pi-home"
+					styleClass="rounded-button ui-button-secondary" outcome="home"/>
+				<p:button icon="pi pi-user"
+					styleClass="rounded-button ui-button-secondary"/>
+			</div>
 		</div>
-		<div class="select-container">
-			<p:button value="Home" styleClass="signin-buttons"
-				action="#{navigationBean.goHome}" />
-			<p:button value="Usuario" styleClass="signin-buttons"
-				action="#{navigationBean.goUsuario}" />
-			<p:button value="Ejercicio" styleClass="signin-buttons"
-				action="#{navigationBean.goEjercicio}" />
+		<div class="new-routine-container">
+			<div class="new-routine-container-item">
+				<h1>Crea tu propia rutina</h1>
+				<br />
+				<h4>Aquí podrás personalizar tu propia rutina</h4>
+			</div>
+			<div class="form new-routine-container-item">
+				<p:inputText id="nombreRutina" value="#{routineBean.nombreRutina}"
+					placeholder="Nombre de la rutina" required="true" />
+				<p:inputText id="descripcionRutina"
+					value="#{routineBean.descripcionRutina}"
+					placeholder="Descripción de la rutina" required="true" />
+				<p:selectOneMenu id="dificultadRutina"
+					value="#{routineBean.dificultadRutina}" required="true">
+					<f:selectItem itemLabel="Selecciona la dificultad" itemValue="" />
+					<f:selectItem itemLabel="Fácil" itemValue="Facil" />
+					<f:selectItem itemLabel="Media" itemValue="Media" />
+					<f:selectItem itemLabel="Difícil" itemValue="Mificil" />
+				</p:selectOneMenu>
+			</div>
+			<p:dataView var="exercise" value="#{ExerciseBean.exercises}" rows="12"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					gridIcon="pi pi-th-large" listIcon="pi pi-bars" layout="grid"
+					gridRowStyleClass="lg:col-6 xl:col-4" flex="true" styleClass="new-routine-container-item" >
+	
+				<p:dataViewGridItem>
+						<div class="exercise-grid-item">
+							<h3>#{exercise.name}</h3>
+							<div>
+								<p>Dificultad: #{exercise.difficulty}</p>
+								<p>Equipamiento: #{exercise.equipment}</p>
+								<p>Enfoque: #{exercise.focus}</p>
+							</div>
+							<p:commandButton value="SELECCIONAR EJERCICIO" action="#{routineBean.confirmar}" oncomplete="this.disabled = true;"  styleClass="ui-button-info"/>
+						</div>
+				</p:dataViewGridItem>
+	
+				<p:dataViewListItem>
+						<div class="exercise-list-item">
+							<h3>#{exercise.name}</h3>
+							<div>
+								<p>Dificultad: #{exercise.difficulty}</p>
+								<p>Equipamiento: #{exercise.equipment}</p>
+								<p>Enfoque: #{exercise.focus}</p>
+							</div>
+							<p:commandButton value="SELECCIONAR EJERCICIO" action="#{routineBean.confirmar}" oncomplete="this.disabled = true;"  styleClass="ui-button-info"/>
+						</div>
+				</p:dataViewListItem>
+			</p:dataView>
+			<h:form id="routineForm" styleClass="form new-routine-container-item">
+				<p:commandButton value="CREAR RUTINA"
+					action="#{routineBean.confirmar}" styleClass="ui-button-info"/>
+			</h:form>
 		</div>
-	</div>
-	<div class="routine-container">
-		<h2>Crea tu propia rutina</h2>
-		<p>Aquí podrás personalizar tu propia rutina</p>
-		<h:form id="routineForm" styleClass="form" >
-			<p:inputText id="nombreRutina" value="#{routineBean.nombreRutina}"
-				placeholder="Nombre de la rutina" required="true" />
-			<p:inputText id="descripcionRutina"
-				value="#{routineBean.descripcionRutina}"
-				placeholder="Descripción de la rutina" required="true" />
-			<p:selectOneMenu id="dificultadRutina"
-				value="#{routineBean.dificultadRutina}" required="true">
-				<f:selectItem itemLabel="Selecciona la dificultad" itemValue="" />
-				<f:selectItem itemLabel="Fácil" itemValue="facil" />
-				<f:selectItem itemLabel="Media" itemValue="media" />
-				<f:selectItem itemLabel="Difícil" itemValue="dificil" />
-			</p:selectOneMenu>
-			<p:commandButton value="CREAR RUTINA" action="#{routineBean.confirmar}" />
-			
-		</h:form>
-	</div>
-</h:body>
+	</h:body>
 </html>

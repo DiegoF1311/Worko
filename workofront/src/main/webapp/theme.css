@@ -58,7 +58,8 @@ html {
 
 body {
 	height: 100%;
-	background: linear-gradient(180deg, black 30%, var(--surface-d) 100%)
+	background: linear-gradient(180deg, black 30%, var(--surface-d) 100%);
+	background-attachment: fixed;
 }
 
 a {
@@ -78,7 +79,7 @@ a {
 .buttons-header {
 	display: flex;
 	justify-content: space-between;
-	width: 10rem;
+	width: 5rem;
 }
 
 .form-container {
@@ -108,7 +109,6 @@ a {
 	justify-content: space-between;
 	align-items: center;
 	flex-wrap: wrap;
-	margin-bottom: 4rem;
 }
 
 .form-label {
@@ -223,15 +223,97 @@ a {
 	justify-content: space-between;
 	align-items: center;
 	background-color: rgba(255, 255, 255, 0.05);	
-	margin: 2rem;
 	padding: 1rem 0;
 	width: 20rem;
 	height: 18rem;
 	border-radius: 1rem;
 }
 
+
 .options-buttons {
 	width: 10rem;
+}
+
+.trainings-container {
+	display: flex;
+	flex-direction: column;
+	width: 90%;
+	margin: 2rem auto;
+	border-radius: 1rem;
+	background-color: rgba(255, 255, 255, 0.05);
+	text-align: center;
+}
+
+.trainings-container h1 {
+	margin: 1rem 0;
+}
+
+/* Training Carrousel */
+.training-item .training-item-content {
+	border: 1px solid var(--surface-a);
+	background-color: var(--surface-a);
+	border-radius: 3px;
+	margin: .3rem;
+	text-align: center;
+	padding: 2rem 0;
+}
+
+.training-item .training-image {
+	width: 50%;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+}
+
+.new-routine-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	flex-direction: column;
+	width: 90%;
+	height: auto;
+	margin: 2rem auto;
+	padding: 1rem 0;
+	border-radius: 1rem;
+	background-color: rgba(255, 255, 255, 0.05);
+	text-align: center;
+}
+
+.avairoutine-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	flex-direction: column;
+	width: 90%;
+	height: auto;
+	margin: 2rem auto;
+	padding: 1rem 0;
+	border-radius: 1rem;
+	background-color: rgba(255, 255, 255, 0.05);
+	text-align: center;
+}
+
+.new-routine-container-item {
+	margin: 2rem;
+	width: 80%;
+}
+
+.exercise-grid-item {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	padding: 1rem;
+	margin: 0 1rem;
+	border: 1px solid var(--surface-d);
+	height: 15rem;
+}
+
+.exercise-list-item {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	padding: 1rem;
+	margin: 0 1rem 1rem;
+	border: 1px solid var(--surface-d);
+	height: 15rem;
 }
 
 .trainings-container {
@@ -241,6 +323,90 @@ a {
 	border-radius: 1rem;
 	background-color: rgba(255, 255, 255, 0.05);
 	text-align: center;
+}
+.training-container {
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	margin: auto;
+	padding: 3rem 0;
+	width: 95%;
+	height: 80%;
+	background-color: rgba(60,1,1);
+	text-align: center;
+	border-radius: 1rem;
+}
+.routine-container {
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	margin: auto;
+	padding: 3rem 0;
+	width: 95%;
+	height: 80%;
+	background-color: rgba(255, 255, 255, 0.05);
+	text-align: center;
+	border-radius: 1rem;
+}
+
+.rounded-content {
+    border-radius: 15px; 
+    padding: 10px; 
+    background-color: rgba(65,5,5); 
+    color: white;
+}
+.newTraining-button {
+	height: 2.5rem;
+	width: 30%;
+	margin: 4rem auto;
+}
+.exercise-container {
+	display: flex;
+	flex-direction: column;
+	margin: 2rem auto;
+	padding: 3rem 0;
+	width: 95%;
+	height: auto;
+	background-color: rgba(255, 255, 255, 0.05);
+	text-align: center;
+	border-radius: 1rem;
+}
+.exercise-button{
+	width: 30rem;
+	margin: 1rem auto;
+	justify-content: space-between;
+}
+.exercise-item .exercise-item-content {
+    border: 1px solid var(--surface-a);
+    background-color: var(--surface-a);
+    border-radius: 3px;
+    margin: .3rem;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.exercise-item .exercise-image {
+    width: 50%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+}
+.exercise-div-button{
+	display: flex;
+	justify-content: space-around;
+	margin: 2rem;
+}
+.exercise-button{
+	height: 3rem;
+	width: 40%;
+	
+}
+.exercise-header{
+	display: flex;
+	justify-content: space-between;
+	margin: 2rem;
+	
+}
+.p-sets{
+margin: 2rem;
 }
 
 body .ui-widget {
@@ -1418,7 +1584,7 @@ body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator {
 }
 
 body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator button {
-    background-color: #950101;
+    background-color: #FFFFFF;
     width: 2rem;
     height: .5rem;
     transition: background-color .2s, color .2s, box-shadow .2s, opacity .2s ease-in-out;

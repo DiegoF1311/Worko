@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.workobackmaster.model.Routine;
+import co.edu.unbosque.workobackmaster.model.Training;
 import co.edu.unbosque.workobackmaster.service.RoutineService;
 import co.edu.unbosque.workobackmaster.service.SequenceService;
+import co.edu.unbosque.workobackmaster.service.TrainingService;
+import co.edu.unbosque.workobackmaster.service.UserService;
 
 
 @RestController
@@ -26,6 +29,10 @@ public class RoutineController {
 	
 	@Autowired
 	public RoutineService routineService;
+	@Autowired
+	public TrainingService trainingService;
+	@Autowired
+	public UserService userService;
 	@Autowired
 	public SequenceService sequenceService;
 	
@@ -42,6 +49,23 @@ public class RoutineController {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(aux);
+	}
+	
+	@GetMapping("/getByTrainings")
+	public ResponseEntity<List<Routine>> getByTrainings(@RequestParam String idusr) {
+		List<Training> aux = trainingService.getTrainingsByUser(userService.findById(idusr).getIdusr());
+		if (aux.isEmpty()) {			
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		}
+		Long[] ids = new Long[aux.size()];
+		for (int i = 0; i < ids.length; i++) {
+			ids[i] = aux.get(i).getIdroutine();
+		}
+		List<Routine> list = routineService.getByTrainings(ids);
+		if (list.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
 	
 }

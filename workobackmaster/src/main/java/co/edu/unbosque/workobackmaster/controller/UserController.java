@@ -61,6 +61,15 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(aux);
 	}
 	
+	@GetMapping("/getUserById")
+	public ResponseEntity<User> getById(@RequestParam String id) {
+		User aux = userService.findById(id);
+		if (aux == null) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		}
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(aux);
+	}
+	
 	@GetMapping("/userlogin")
 	public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
 		User usr = userService.findByUsername(username);

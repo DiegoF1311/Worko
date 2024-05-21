@@ -7,10 +7,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,6 +22,10 @@ import co.edu.unbosque.model.Login;
 import co.edu.unbosque.model.Routine;
 import co.edu.unbosque.model.Training;
 import co.edu.unbosque.model.User;
+import co.edu.unbosque.service.ExerciseRoutineService;
+import co.edu.unbosque.service.ExerciseService;
+import co.edu.unbosque.service.RoutineService;
+import co.edu.unbosque.service.TrainingService;
 
 public class HttpClientSynchronous {
 	
@@ -51,12 +54,41 @@ public class HttpClientSynchronous {
 		return uglyJson;
 	}
 	
-	public String doPostUser(User u, Login log) {
+	public static User userById(String url) {
+		String json = doGetAndParse(url);
+		Gson gson = new Gson();
+		return gson.fromJson(json, User.class);
+	}
+	
+	public static List<Training> trainingsByUser(String url) {
+		return TrainingService.trainingsByUser(doGetAndParse(url));
+	}
+	
+	public static List<Routine> routinesByTrainings(String url) {
+		return RoutineService.routinesByTrainings(doGetAndParse(url));
+	}
+	
+	public static List<Exercise> getAllExercises(String url) {
+		return ExerciseService.getAll(doGetAndParse(url));
+	}
+	
+	public static List<Routine> routines(String url){
+		return RoutineService.routines(doGetAndParse(url));
+	}
+	public static List<Exercise> exercise(String url){
+		return ExerciseService.exercises(doGetAndParse(url));
+	}
+	public static List<ExerciseRoutine> exerciseRoutine(String url){
+		return ExerciseRoutineService.exercisesRoutines(doGetAndParse(url));
+	}
+	
+	public static String doPostUser(User u, Login log) {
 		String formParams = convertToFormParams(u);
 		String formParamsLog = convertToFormParams(log);
+		System.out.println(formParams+formParamsLog);
 		HttpRequest request = HttpRequest.newBuilder()
 				.POST(HttpRequest.BodyPublishers.ofString(formParams+formParamsLog))
-				.uri(URI.create("http://localhost:8085/createUser"))
+				.uri(URI.create("http://localhost:8085/execute/createUser"))
 				.setHeader("User-Agent", "Java 11 HttpClient Bot")
 				.header("Content-Type", "application/x-www-form-urlencoded")
 				.build();
@@ -69,12 +101,12 @@ public class HttpClientSynchronous {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("status code -> " + response.statusCode());
+		System.out.println(response.statusCode());
 
-		return prettyPrintUsingGson(response.body());
+		return response.body();
 	}
 	
-	public String doPost(String url, Object o) {
+	public static String doPost(String url, Object o) {
 		String formParams = convertToFormParams(o);
 		HttpRequest request = HttpRequest.newBuilder()
 				.POST(HttpRequest.BodyPublishers.ofString(formParams))
@@ -93,10 +125,10 @@ public class HttpClientSynchronous {
 		}
 		System.out.println("status code -> " + response.statusCode());
 
-		return prettyPrintUsingGson(response.body());
+		return response.body();
 	}
 	
-	private String convertToFormParams(Object o) {
+	private static String convertToFormParams(Object o) {
 		if (o instanceof Exercise){
 			Exercise exercise = (Exercise) o;
 			return "name=" + urlEncode(exercise.getName()) +
@@ -108,9 +140,8 @@ public class HttpClientSynchronous {
 			User user = (User) o;
 			String formattedDate = "";
 			try {
-	            Date date = inputDateFormat.parse(user.getRegistrationdate()+"");
-	            formattedDate = dateFormat.format(date);
-	        } catch (ParseException e) {
+	            formattedDate = inputDateFormat.format(user.getRegistrationdate());
+	        } catch (Exception e) {
 	            System.err.println("Error al parsear la fecha: " + e.getMessage());
 	        }
 			return 	"username=" + urlEncode(user.getUsername()) +
@@ -132,9 +163,8 @@ public class HttpClientSynchronous {
 			Training training = (Training) o;
 			String formattedDate = "";
 			try {
-	            Date date = inputDateFormat.parse(training.getDate()+"");
-	            formattedDate = dateFormat.format(date);
-	        } catch (ParseException e) {
+	            formattedDate = inputDateFormat.format(training.getDate());
+	        } catch (Exception e) {
 	            System.err.println("Error al parsear la fecha: " + e.getMessage());
 	        }
 			return "iduser=" + urlEncode(training.getIduser()+"") +
@@ -160,7 +190,7 @@ public class HttpClientSynchronous {
 		return "";
 	}
 	
-	private String urlEncode(String value) {
+	private static String urlEncode(String value) {
 		return value == null ? "" : URLEncoder.encode(value, StandardCharsets.UTF_8);
 	}
 	
@@ -169,5 +199,5 @@ public class HttpClientSynchronous {
 			JsonElement jsonElement = JsonParser.parseString(uglyJson);
 			String prettyJsonString = gson.toJson(jsonElement);
 			return prettyJsonString;
-		}
+	}
 }

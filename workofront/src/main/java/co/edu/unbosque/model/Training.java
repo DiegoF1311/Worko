@@ -15,8 +15,7 @@ public class Training {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Training(Long idtraining, Long iduser, Long idroutine, Date date, Integer duration) {
-		this.idtraining = idtraining;
+	public Training(Long iduser, Long idroutine, Date date, Integer duration) {
 		this.iduser = iduser;
 		this.idroutine = idroutine;
 		this.date = date;

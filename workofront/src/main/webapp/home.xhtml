@@ -16,7 +16,7 @@
 		<div class="header">
 	        <h1 class="">WORKO</h1>
 	        <div class="buttons-header">
-		        <p:button icon="pi pi-home" styleClass="rounded-button ui-button-secondary"/>
+		        <p:button icon="pi pi-home" styleClass="rounded-button ui-button-secondary" outcome="home"/>
 		        <p:button icon="pi pi-user" styleClass="rounded-button ui-button-secondary"/>
 	        </div>
 	    </div>
@@ -24,20 +24,33 @@
 		<div class="options-container">
 			<div class="options">
 				<p:graphicImage library="imgs" name="training-img.png"/>
-				<p:button value="Realizar Entrenamiento" styleClass="options-buttons" />
+				<p:button value="Realizar Entrenamiento" styleClass="options-buttons" outcome="newtraining"/>
 			</div>
 			<div class="options">
 				<p:graphicImage library="imgs" name="routine-img.png"/>
-				<p:button value="Crear Rutina" styleClass="options-buttons" />
+				<p:button value="Crear Rutina" styleClass="options-buttons" outcome="newroutine"/>
 			</div>
 			<div class="options">
 				<p:graphicImage library="imgs" name="search-img.png"/>
-				<p:button value="Explorar Rutinas" styleClass="options-buttons" />
+				<p:button value="Explorar Rutinas" styleClass="options-buttons" outcome="availableroutines"/>
 			</div>
 		</div>
 		
 		<div class="trainings-container">
 			<h1>ENTRENAMIENTOS REALIZADOS</h1>
+			<p:carousel value="#{UserBean.list}" var="training" circular="true" autoplayInterval="5000" numVisible="#{UserBean.itemscarousel}" numScroll="1">
+	            <div class="training-item">
+	            	<div class="training-item-content">
+	                    <div>
+	                        <h2 class="mb-1">#{training.routinename}</h2>
+	                        <h4 class="mb-1">#{training.routinedes}</h4>
+	                        <h4 class="mb-1">Dificultad: #{training.routinediff}</h4>
+	                        <h4 class="mb-1">#{training.date}</h4>
+	                        <h4 class="mb-1">#{training.duration}</h4>
+	                    </div>
+	                </div>
+	            </div>
+        	</p:carousel>
 		</div>
 	</h:body>
 </html>

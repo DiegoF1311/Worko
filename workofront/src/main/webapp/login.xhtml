@@ -15,12 +15,12 @@
 	<h:body>
 		<div class="header">
 	        <h1 class="">WORKO</h1>
-	        <p:button value="SIGN IN" styleClass=""/>
+	        <p:button value="SIGN IN" outcome="signin" styleClass=""/>
 	    </div>
 
 		<div class="form-container">
 			<h1>LOG IN</h1>
-			<h:form styleClass="form" id="passwordChangeForm" action="/submit-your-password-change-form" method="post">
+			<h:form styleClass="form" method="post">
 				<div>
 					<label for="usuario" class="form-label">Usuario:</label>
 					<p:inputText id="usuario" name="usuario" placeholder="Usuario:" required="true" styleClass="form-input" value="#{UserBean.username}"/>
@@ -33,7 +33,7 @@
 				</div>
 				<p:commandButton styleClass="form-button" value="CONFIRMAR" action="#{UserBean.login}" update="growl-sticky"/>
 			</h:form>
-			<p>¿Ya tienes una cuenta? <a href="#">Inicia Sesión aquí.</a></p>
+			<p>¿Aun no tienes una cuenta? <a href="signin.xhtml">Crea una aquí.</a></p>
 		</div>
 		<p:growl id="growl-sticky" for="sticky-key" showDetail="true"
 		sticky="true" />
