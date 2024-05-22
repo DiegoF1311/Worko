@@ -1,14 +1,29 @@
 package co.edu.unbosque.beans;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import javax.swing.Timer;
 
 import org.primefaces.PrimeFaces;
+
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.UnitValue;
 
 import co.edu.unbosque.controller.HttpClientSynchronous;
 import co.edu.unbosque.model.Exercise;
@@ -20,36 +35,42 @@ import co.edu.unbosque.model.User;
 import co.edu.unbosque.service.ExerciseRoutineService;
 import co.edu.unbosque.service.ExerciseService;
 import co.edu.unbosque.service.RoutineService;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Named("UserBean")
-@RequestScoped
-public class UserBean {
+@SessionScoped
+public class UserBean implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private String username = "";
 	private String password = "";
 	private static String iduser = "";
 	private int itemscarousel;
 	private static List<TrainingRoutine> list = new ArrayList<>();
-	
+
 	private static List<Routine> routines;
 	private static List<Exercise> exercises;
+	private static List<Exercise> allexercises;
 	private static List<ExerciseRoutine> exercisesRoutines;
 	private static Routine selectedRoutine;
 	private static Exercise selectedExercise;
 	private int currentIndex;
-    private int seconds = 0;
-    private Timer timer;
-    private boolean running = false;
-	
+	private Timer time;
+	private int timeLapse = 0;
+	private static int minutes = 0;
+	private static int seconds = 0;
+	private  String sec;
+	private  String min;
+	private User usrloged = new User();
+
 	public UserBean() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	private User usrloged = new User();
-	
+
 	public String login() {
 		String parameters = "userlogin?username="+username+"&password="+password;
 		String response = HttpClientSynchronous.doGetAndParse("http://localhost:8085/execute/get?path="+urlEncode(parameters));
@@ -61,20 +82,40 @@ public class UserBean {
 			showStickyLogin("201", "Inicio de sesion realizado con exito!");
 			iduser = response;
 			trainingsroutines();
+			loadUserProfile();
 			return "home.xhtml?faces-redirect=true";
 		}
 	}
 	
+	public String updateRoutines() {
+		String json = HttpClientSynchronous.doGetAndParse("http://localhost:8085/execute/get?path=getAllRoutines");
+		routines = RoutineService.routines(json);
+		return "availableroutines.xhtml?faces-redirect=true";
+	}
+	
+	private void loadUserProfile() {
+		String parameters = "getUserById?id=" + iduser;
+		usrloged = HttpClientSynchronous.userById("http://localhost:8085/execute/get?path=" + urlEncode(parameters));
+		System.out.println("Datos del usuario: " + usrloged);
+	}
+
 	public List<Training> trainings() {
 		String parameters = "getTrainingsByUser?iduser="+iduser;
 		return HttpClientSynchronous.trainingsByUser("http://localhost:8085/execute/get?path="+urlEncode(parameters));
 	}
-	
+
+	private Cell createHeaderCell(String content) {
+		return new Cell().add(new Paragraph(content).setBold()).setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER);
+	}
+
+	private Cell createCell(String content) {
+		return new Cell().add(new Paragraph(content)).setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER);
+	}
 	public List<Routine> routines() {
 		String parameters = "getByTrainings?idusr="+iduser;
 		return HttpClientSynchronous.routinesByTrainings("http://localhost:8085/execute/get?path="+urlEncode(parameters));
 	}
-	
+
 	public void trainingsroutines() {
 		List<Training> t = trainings();
 		List<Routine> r = routines();
@@ -85,7 +126,8 @@ public class UserBean {
 		setList(auxlist);
 		calcItems();
 	}
-	
+
+
 	public void calcItems() {
 		if (getList().size() < 3) {
 			itemscarousel = list.size();
@@ -94,59 +136,46 @@ public class UserBean {
 		}
 	}
 	
-	public void showStickyLogin(String code, String content) {
-		if (code.equals("201")) {
-			FacesContext.getCurrentInstance().addMessage("sticky-key",
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Hecho", content));
-		} else if (code.equals("406")) {
-			FacesContext.getCurrentInstance().addMessage("sticky-key",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", content));
-		}
+	public void startTimer() {
+		timeLapse = 0;
+		System.out.println("Timer iniciado");
+		time = new Timer(1000, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				timeLapse += 1000;
+				minutes = ( timeLapse / 60000 ) % 60;
+				seconds = ( timeLapse / 1000) % 60;
+				sec = String.format("%02d",seconds);
+				min = String.format("%02d",minutes);
+			}
+		});
+		time.start();
 	}
-	
+
+	public void stopTimer() {
+		System.out.println("Timer detenido");
+		time.stop();
+		System.out.println(seconds);
+		System.out.println(minutes);
+	}
+
+
 	public String create() {
 		String parameters = "getUserById?id="+iduser;
 		usrloged = HttpClientSynchronous.userById("http://localhost:8085/execute/get?path="+urlEncode(parameters));
-		Training t = new Training(usrloged.getIdusr(), selectedRoutine.getIdroutine(), Calendar.getInstance().getTime(), seconds);
+		Training t = new Training(usrloged.getIdusr(), selectedRoutine.getIdroutine(), Calendar.getInstance().getTime(), minutes);
 		String response = HttpClientSynchronous.doPost("execute/createTraining", t);
 		System.out.println("Crear training "+response);
-    	stopTimer();
-    	System.out.println(seconds);
-    	PrimeFaces.current().executeScript("alert('Entrenamiento guardado!!');");
-    	trainingsroutines();
-    	return "home.xhtml";
-    }
-    public int getSeconds() {
-        return seconds;
-    }
+		PrimeFaces.current().executeScript("alert('Entrenamiento completado con exito, tiempo registrado: " + min + ":" + sec + "');");
+		stopTimer();
+		trainingsroutines();
+		min = "00";
+		sec = "00";
+		return "home.xhtml?faces-redirect=true";
+	}
 
-    public boolean isRunning() {
-        return running;
-    }
 
-    public void startTimer() {
-    	System.out.println("corriendo");
-        if (timer != null) {
-            timer.cancel();
-        }
-        seconds = 0;
-        timer = new Timer();
-        running = true;
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                seconds++;
-            }
-        }, 1000, 1000);
-    }
-
-    public void stopTimer() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-        running = false;
-    }
 	public String chooseRoutine(Routine routine) {
 		UserBean.selectedRoutine = routine;
 		this.currentIndex = 0;
@@ -155,7 +184,7 @@ public class UserBean {
 		UserBean.selectedExercise = exercises.get(currentIndex);
 		return "exercise.xhtml?faces-redirect=true";
 	}
-	
+
 	public String getSetsAndReps() {
 		if (exercisesRoutines != null && selectedExercise != null) {
 			for (ExerciseRoutine er : exercisesRoutines) {
@@ -164,7 +193,7 @@ public class UserBean {
 				}
 			}
 		}
-		return "Informaci�n no disponible";
+		return "Informacion no disponible";
 	}
 
 	public List<Routine> getRoutines() {
@@ -178,12 +207,20 @@ public class UserBean {
 		UserBean.routines = routines;
 	}
 	public List<Exercise> getExercises(String id) {
-	    if (exercises == null) {
-	        String json = HttpClientSynchronous.doGetAndParse("http://localhost:8085/execute/get?path=getByRoutine%3Fidroutine%3D"+id);
-	        exercises = ExerciseService.exercises(json);
-	    }
-	    return exercises;
+		if (exercises == null) {
+			String json = HttpClientSynchronous.doGetAndParse("http://localhost:8085/execute/get?path=getByRoutine%3Fidroutine%3D"+id);
+			exercises = ExerciseService.exercises(json);
+		}
+		return exercises;
 	}
+	public List<Exercise> getAllExercises() {
+		if (allexercises == null) {
+			String json = HttpClientSynchronous.doGetAndParse("http://localhost:8085/execute/get?path=getAllExercises");
+			allexercises = ExerciseService.exercises(json);
+		}
+		return allexercises;
+	}
+
 
 	public void setExercises(List<Exercise> exercises) {
 		UserBean.exercises = exercises;
@@ -195,7 +232,7 @@ public class UserBean {
 		}
 		return exercisesRoutines;
 	}
-	
+
 	public void setExercisesRoutines(List<ExerciseRoutine> exercisesRoutines) {
 		UserBean.exercisesRoutines = exercisesRoutines;
 	}
@@ -206,7 +243,7 @@ public class UserBean {
 	public void setSelectedRoutine(Routine selectedRoutine) {
 		UserBean.selectedRoutine = selectedRoutine;
 	}
-	
+
 	public Exercise getSelectedExercise() {
 		return selectedExercise;
 	}
@@ -219,11 +256,11 @@ public class UserBean {
 	public void setCurrentIndex(int currentIndex) {
 		this.currentIndex = currentIndex;
 	}
-	
+
 	public List<Exercise> getExercises() {
 		return exercises;
 	}
-	
+
 	private String urlEncode(String value) {
 		return value == null ? "" : URLEncoder.encode(value, StandardCharsets.UTF_8);
 	}
@@ -255,11 +292,31 @@ public class UserBean {
 	public User getUsrloged() {
 		return usrloged;
 	}
+	
+	public String getSec() {
+		return sec;
+	}
+
+
+	public void setSec(String sec) {
+		this.sec = sec;
+	}
+
+
+	public String getMin() {
+		return min;
+	}
+
+
+	public void setMin(String min) {
+		this.min = min;
+	}
+
 
 	public void setUsrloged(User usrloged) {
 		this.usrloged = usrloged;
 	}
-	
+
 	public List<TrainingRoutine> getList() {
 		return list;
 	}
@@ -271,9 +328,134 @@ public class UserBean {
 	public int getItemscarousel() {
 		return itemscarousel;
 	}
+	public int getMinutes() {
+		return minutes;
+	}
+
+	public void setMinutes(int minutes) {
+		UserBean.minutes = minutes;
+	}
+
+	public int getSeconds() {
+		return seconds;
+	}
+
+	public void setSeconds(int seconds) {
+		UserBean.seconds = seconds;
+	}
 
 	public void setItemscarousel(int itemscarousel) {
 		this.itemscarousel = itemscarousel;
 	}
 	
+	public void generatePdf() throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PdfWriter writer = new PdfWriter(baos);
+		PdfDocument pdf = new PdfDocument(writer);
+		Document document = new Document(pdf);
+		
+		document.add(new Paragraph("Informe de entrenamientos").setTextAlignment(TextAlignment.CENTER).setBold());
+		document.add(new Paragraph(usrloged.getName()).setTextAlignment(TextAlignment.CENTER).setBold());
+		document.add(new Paragraph("Estos son los entrenamientos que has realizado")).setTextAlignment(TextAlignment.CENTER);
+		
+		float[] columnWidths = {1, 2, 4, 3, 2};
+		Table table = new Table(UnitValue.createPercentArray(columnWidths)).useAllAvailableWidth();
+		
+		table.addHeaderCell(createHeaderCell("ID ENTRENAMIENTO"));
+		table.addHeaderCell(createHeaderCell("ID RUTINA"));
+		table.addHeaderCell(createHeaderCell("NOMBRE DE LA RUTINA"));
+		table.addHeaderCell(createHeaderCell("FECHA"));
+		table.addHeaderCell(createHeaderCell("DURACI�N"));
+		
+		int id = 1;
+		List<Routine> routines = getRoutines(); 
+		
+		for (Training training : trainings()) {
+			table.addCell(createCell(String.valueOf(id++)));
+			table.addCell(createCell(training.getIdroutine() + ""));
+			
+			routines = getRoutines();
+			String routineName = "Nombre no disponible";
+			for (Routine r : routines) {
+				if (r.getIdroutine().equals(training.getIdroutine())) {
+					routineName = r.getName();
+					break;
+				}
+			}
+			
+			table.addCell(createCell(routineName));
+			table.addCell(createCell(String.valueOf(training.getDate())));
+			table.addCell(createCell(String.valueOf(training.getDuration())));
+		}
+		
+		document.add(table);
+		document.close();
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+		response.reset();
+		response.setContentType("application/pdf");
+		response.setHeader("Content-Disposition", "attachment; filename=informeEntrenamientos.pdf");
+		response.getOutputStream().write(baos.toByteArray());
+		response.getOutputStream().flush();
+		
+		facesContext.responseComplete();
+	}
+	
+	public void generateExercisesPdf() throws IOException {
+		System.out.println("Entro generar informe ejercicios");
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PdfWriter writer = new PdfWriter(baos);
+		PdfDocument pdf = new PdfDocument(writer);
+		Document document = new Document(pdf);
+		
+		document.add(new Paragraph("Informe de Ejercicios").setTextAlignment(TextAlignment.CENTER).setBold());
+		document.add(new Paragraph(usrloged.getName()).setTextAlignment(TextAlignment.CENTER).setBold());
+		document.add(new Paragraph("Estos son todos los ejercicios con los que cuenta nuestra app")).setTextAlignment(TextAlignment.CENTER);
+		
+		float[] columnWidths = {1, 2, 4, 3, 2};
+		Table table = new Table(UnitValue.createPercentArray(columnWidths)).useAllAvailableWidth();
+		
+		table.addHeaderCell(createHeaderCell("ID EJERCICIO"));
+		table.addHeaderCell(createHeaderCell("NOMBRE"));
+		table.addHeaderCell(createHeaderCell("DIFICULTAD"));
+		table.addHeaderCell(createHeaderCell("ENFOQUE"));
+		table.addHeaderCell(createHeaderCell("EQUIPAMIENTO"));
+		
+		allexercises = getAllExercises();
+		if (allexercises == null || allexercises.isEmpty()) {
+			document.add(new Paragraph("No hay ejercicios disponibles.").setTextAlignment(TextAlignment.CENTER));
+		} else {
+			System.out.println(allexercises);
+			for (Exercise exercise : allexercises) {
+				table.addCell(createCell(String.valueOf(exercise.getIdexercise())));
+				table.addCell(createCell(exercise.getName()));
+				table.addCell(createCell(exercise.getDifficulty()));
+				table.addCell(createCell(exercise.getFocus()));
+				table.addCell(createCell(exercise.getEquipment()));
+			}
+			document.add(table);
+		}
+		document.close();
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+		response.reset();
+		response.setContentType("application/pdf");
+		response.setHeader("Content-Disposition", "attachment; filename=informeEjerjecicios.pdf");
+		response.getOutputStream().write(baos.toByteArray());
+		response.getOutputStream().flush();
+		
+		facesContext.responseComplete();
+	}
+
+	public void showStickyLogin(String code, String content) {
+		if (code.equals("201")) {
+			FacesContext.getCurrentInstance().addMessage("sticky-key",
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Hecho", content));
+		} else if (code.equals("406")) {
+			FacesContext.getCurrentInstance().addMessage("sticky-key",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", content));
+		}
+	}
 }

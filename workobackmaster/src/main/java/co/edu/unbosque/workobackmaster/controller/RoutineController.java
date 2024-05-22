@@ -51,6 +51,11 @@ public class RoutineController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(aux);
 	}
 	
+	@GetMapping("/getCurrentId")
+	public ResponseEntity<Long> getCurrentId() {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(sequenceService.getCurrentValue("seqroutine"));
+	}
+	
 	@GetMapping("/getByTrainings")
 	public ResponseEntity<List<Routine>> getByTrainings(@RequestParam String idusr) {
 		List<Training> aux = trainingService.getTrainingsByUser(userService.findById(idusr).getIdusr());

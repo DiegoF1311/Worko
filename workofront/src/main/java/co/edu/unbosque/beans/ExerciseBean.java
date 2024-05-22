@@ -18,7 +18,7 @@ public class ExerciseBean {
 	private List<Exercise> exercises = new ArrayList<>();
 	
 	public ExerciseBean() {
-		getAllExercises();
+		
 	}
 	
 	@PostConstruct

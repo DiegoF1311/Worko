@@ -5,77 +5,106 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-	<h:head>
-		<title>Worko New Routine</title>
-		<link rel="stylesheet" type="text/css" href="theme.css" />
-		<h:outputStylesheet library="webjars"
-			name="primeflex/3.3.1/primeflex.min.css" />
-	</h:head>
-	
-	<h:body>
-		<div class="header">
-			<h1 class="">WORKO</h1>
-			<div class="buttons-header">
-				<p:button icon="pi pi-home"
-					styleClass="rounded-button ui-button-secondary" outcome="home"/>
-				<p:button icon="pi pi-user"
-					styleClass="rounded-button ui-button-secondary"/>
-			</div>
+<h:head>
+	<title>Worko New Routine</title>
+	<link rel="stylesheet" type="text/css" href="theme.css" />
+	<h:outputStylesheet library="webjars"
+		name="primeflex/3.3.1/primeflex.min.css" />
+</h:head>
+
+<h:body>
+	<div class="header">
+		<h1 class="">WORKO</h1>
+		<div class="buttons-header">
+			<p:button icon="pi pi-home"
+				styleClass="rounded-button ui-button-secondary" outcome="home" />
+			<p:button icon="pi pi-user"
+				styleClass="rounded-button ui-button-secondary" outcome="profile"/>
 		</div>
-		<div class="new-routine-container">
-			<div class="new-routine-container-item">
-				<h1>Crea tu propia rutina</h1>
-				<br />
-				<h4>Aquí podrás personalizar tu propia rutina</h4>
-			</div>
-			<div class="form new-routine-container-item">
-				<p:inputText id="nombreRutina" value="#{routineBean.nombreRutina}"
-					placeholder="Nombre de la rutina" required="true" />
-				<p:inputText id="descripcionRutina"
-					value="#{routineBean.descripcionRutina}"
-					placeholder="Descripción de la rutina" required="true" />
-				<p:selectOneMenu id="dificultadRutina"
-					value="#{routineBean.dificultadRutina}" required="true">
-					<f:selectItem itemLabel="Selecciona la dificultad" itemValue="" />
-					<f:selectItem itemLabel="Fácil" itemValue="Facil" />
-					<f:selectItem itemLabel="Media" itemValue="Media" />
-					<f:selectItem itemLabel="Difícil" itemValue="Mificil" />
-				</p:selectOneMenu>
-			</div>
-			<p:dataView var="exercise" value="#{ExerciseBean.exercises}" rows="12"
-					paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					gridIcon="pi pi-th-large" listIcon="pi pi-bars" layout="grid"
-					gridRowStyleClass="lg:col-6 xl:col-4" flex="true" styleClass="new-routine-container-item" >
-	
+	</div>
+	<h:form id="routineform" class="new-routine-container">
+		<div class="new-routine-container-item">
+			<h1>Crea tu propia rutina</h1>
+			<br />
+			<h4>Aquí podrás personalizar tu propia rutina</h4>
+		</div>
+		<div class="form new-routine-container-item">
+			<p:inputText id="name" value="#{RoutineBean.name}"
+				placeholder="Nombre de la rutina" required="true" />
+			<p:inputText id="description" value="#{RoutineBean.description}"
+				placeholder="Descripción de la rutina" required="true" />
+			<p:selectOneMenu id="difficulty" value="#{RoutineBean.difficulty}"
+				required="true">
+				<f:selectItem itemLabel="Selecciona la dificultad" itemValue="" />
+				<f:selectItem itemLabel="Fácil" itemValue="Facil" />
+				<f:selectItem itemLabel="Media" itemValue="Media" />
+				<f:selectItem itemLabel="Difícil" itemValue="Dificil" />
+			</p:selectOneMenu>
+		</div>
+		<div class="new-routine-container-item">
+			<p:dataView var="exercise" value="#{ExerciseBean.exercises}"
+				rows="12" paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				gridIcon="pi pi-th-large" listIcon="pi pi-bars" layout="grid"
+				gridRowStyleClass="lg:col-6 xl:col-4" flex="true">
+
 				<p:dataViewGridItem>
-						<div class="exercise-grid-item">
-							<h3>#{exercise.name}</h3>
-							<div>
-								<p>Dificultad: #{exercise.difficulty}</p>
-								<p>Equipamiento: #{exercise.equipment}</p>
-								<p>Enfoque: #{exercise.focus}</p>
-							</div>
-							<p:commandButton value="SELECCIONAR EJERCICIO" action="#{routineBean.confirmar}" oncomplete="this.disabled = true;"  styleClass="ui-button-info"/>
+					<div class="exercise-grid-item">
+						<h3>#{exercise.name}</h3>
+						<div>
+							<p>Dificultad: #{exercise.difficulty}</p>
+							<p>Equipamiento: #{exercise.equipment}</p>
+							<p>Enfoque: #{exercise.focus}</p>
 						</div>
+						<p:inputNumber decimalPlaces="0" id="sets_#{exercise.idexercise}"
+							value="#{RoutineBean.setsMap[exercise.idexercise]}"
+							placeholder="Sets" required="true">
+							<f:ajax execute="@this" render="@this" />
+						</p:inputNumber>
+						<p:inputNumber decimalPlaces="0" id="reps_#{exercise.idexercise}"
+							value="#{RoutineBean.repsMap[exercise.idexercise]}"
+							placeholder="Reps" required="true">
+							<f:ajax execute="@this" render="@this" />
+						</p:inputNumber>
+						<p:commandButton value="SELECCIONAR EJERCICIO"
+							action="#{RoutineBean.confirm(exercise.idexercise)}"
+							oncomplete="this.disabled = true;" styleClass="ui-button-info"
+							disabled="#{RoutineBean.selectedExercises.contains(exercise.idexercise)}"
+							process="@this @parent" update="@this" immediate="false" />
+					</div>
 				</p:dataViewGridItem>
-	
+
 				<p:dataViewListItem>
-						<div class="exercise-list-item">
-							<h3>#{exercise.name}</h3>
-							<div>
-								<p>Dificultad: #{exercise.difficulty}</p>
-								<p>Equipamiento: #{exercise.equipment}</p>
-								<p>Enfoque: #{exercise.focus}</p>
-							</div>
-							<p:commandButton value="SELECCIONAR EJERCICIO" action="#{routineBean.confirmar}" oncomplete="this.disabled = true;"  styleClass="ui-button-info"/>
+					<div class="exercise-list-item">
+						<h3>#{exercise.name}</h3>
+						<div>
+							<p>Dificultad: #{exercise.difficulty}</p>
+							<p>Equipamiento: #{exercise.equipment}</p>
+							<p>Enfoque: #{exercise.focus}</p>
 						</div>
+						<p:inputNumber id="sets_list_#{exercise.idexercise}"
+							value="#{RoutineBean.setsMap[exercise.idexercise]}"
+							placeholder="Sets" required="true">
+							<f:ajax execute="@this" render="@this" />
+						</p:inputNumber>
+						<p:inputNumber id="reps_list_#{exercise.idexercise}"
+							value="#{RoutineBean.repsMap[exercise.idexercise]}"
+							placeholder="Reps" required="true">
+							<f:ajax execute="@this" render="@this" />
+						</p:inputNumber>
+						<p:commandButton value="SELECCIONAR EJERCICIO"
+							action="#{RoutineBean.confirm(exercise.idexercise)}"
+							oncomplete="this.disabled = true;" styleClass="ui-button-info"
+							disabled="#{RoutineBean.selectedExercises.contains(exercise.idexercise)}"
+							process="@this @parent" update="@this" immediate="false" />
+					</div>
 				</p:dataViewListItem>
 			</p:dataView>
-			<h:form id="routineForm" styleClass="form new-routine-container-item">
-				<p:commandButton value="CREAR RUTINA"
-					action="#{routineBean.confirmar}" styleClass="ui-button-info"/>
-			</h:form>
 		</div>
-	</h:body>
+		<p:commandButton value="CREAR RUTINA"
+			action="#{RoutineBean.createRoutine}"
+			styleClass="ui-button-info new-routine-container-item" process="@this name difficulty description"
+			update="@this" immediate="false" />
+	</h:form>
+</h:body>
 </html>

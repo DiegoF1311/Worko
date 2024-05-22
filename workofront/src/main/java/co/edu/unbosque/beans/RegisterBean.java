@@ -8,6 +8,7 @@ import org.primefaces.PrimeFaces;
 import co.edu.unbosque.controller.HttpClientSynchronous;
 import co.edu.unbosque.model.Login;
 import co.edu.unbosque.model.User;
+import co.edu.unbosque.util.EmailSender;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -38,6 +39,7 @@ public class RegisterBean {
 			PrimeFaces.current().executeScript("alert('Debes llenar todos los datos del formulario!!');");
 			return "";
 		}
+		EmailSender.sendEmail(email, username);
 		PrimeFaces.current().executeScript("alert('Datos de usuario registrados!!');");
 		showStickyReg("201", "Datos de usuario registrados!!");
 		return "password.xhtml?faces-redirect=true";

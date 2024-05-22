@@ -30,7 +30,6 @@ import co.edu.unbosque.service.TrainingService;
 public class HttpClientSynchronous {
 	
 	private static final SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 	
 	private static final HttpClient httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1)
 			.connectTimeout(Duration.ofSeconds(10)).build();
@@ -123,7 +122,7 @@ public class HttpClientSynchronous {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("status code -> " + response.statusCode());
+		System.out.println("Post " + response.statusCode());
 
 		return response.body();
 	}

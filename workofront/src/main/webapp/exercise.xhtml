@@ -32,7 +32,10 @@
 					<p>Ejercicio #{status.index + 1} de
 						#{UserBean.exercises.size()}</p>
 					<h1>#{exercise.name}</h1>
-					<p id="time">Tiempo: #{UserBean.seconds}</p>
+					<h:panelGroup id="timePanel">
+						<h:outputText id="time" value="Tiempo: #{UserBean.min}:#{UserBean.sec}" />
+					</h:panelGroup>
+					<p:poll interval="1" update="timePanel" />
 				</div>
 				<p class="p-sets">Recuerda que son:
 					#{UserBean.setsAndReps}</p>
